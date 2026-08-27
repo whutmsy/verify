@@ -29,4 +29,7 @@ class top_test extends uvm_test;
         phase.drop_objection(this);
     endtask
 
+    virtual task main_phase(uvm_phase phase);
+    endtask
+
 endclass //case extends uvm_test
