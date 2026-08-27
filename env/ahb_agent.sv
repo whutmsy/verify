@@ -2,6 +2,7 @@ class ahb_agent extends uvm_agent;
 
     ahb_sequencer ahb_sqr;
     ahb_driver ahb_drv;
+    ahb_monitor ahb_mon;
 
     `uvm_component_utils(ahb_agent)
 
@@ -13,6 +14,7 @@ class ahb_agent extends uvm_agent;
         super.build_phase(phase);
         ahb_sqr = ahb_sequencer::type_id::create("ahb_sqr", this);
         ahb_drv = ahb_driver::type_id::create("ahb_drv", this);
+        ahb_mon = ahb_monitor::type_id::create("ahb_mon", this);
     endfunction
 
     virtual function void connect_phase(uvm_phase phase);

@@ -7,8 +7,10 @@ import uvm_pkg::*;
 `include "ahb_transaction.sv"
 `include "ahb_driver.sv"
 `include "ahb_sequencer.sv"
+`include "ahb_monitor.sv"
 `include "ahb_agent.sv"
 `include "ahb_base_sequence.sv"
+`include "ahb_scoreboard.sv"
 
 //top
 `include "env.sv"
