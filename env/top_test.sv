@@ -30,7 +30,7 @@ class top_test extends uvm_test;
     endtask
 
     virtual task main_phase(uvm_phase phase);
-        //super.main_phase(phase); 
+        super.main_phase(phase); 
     endtask
 
 endclass //case extends uvm_test
