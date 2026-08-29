@@ -10,7 +10,7 @@
 //======================================================================
 `timescale 1ns/1ps
 
-module tb_selfcheck;
+module tb;
 
     // 时钟与复位
     reg HCLK;
@@ -154,7 +154,7 @@ module tb_selfcheck;
 
     initial begin
         $dumpfile("tb_selfcheck.vcd");
-        $dumpvars(0, tb_selfcheck);
+        $dumpvars(0, tb);
     end
 
     //==================================================================

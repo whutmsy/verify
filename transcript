@@ -1,0 +1,53 @@
+# vsim -novopt -c -do "do.tcl" -sv_lib D:/questasim64_10.6c/uvm-1.1d/win64/uvm_dpi work.tb 
+# Start time: 15:18:08 on Aug 29,2026
+# ** Warning: (vsim-8891) All optimizations are turned off because the -novopt switch is in effect. This will cause your simulation to run very slowly. If you are using this switch to preserve visibility for Debug or PLI features please see the User's Manual section on Preserving Object Visibility with vopt.
+# //  Questa Sim-64
+# //  Version 10.6c win64 Jul 26 2017
+# //
+# //  Copyright 1991-2017 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Refreshing D:/designhouse/windows/verify/work.tb
+# Loading sv_std.std
+# Loading work.tb
+# Refreshing D:/designhouse/windows/verify/work.ahb_slave
+# Loading work.ahb_slave
+# Refreshing D:/designhouse/windows/verify/work.sram
+# Loading work.sram
+# do do.tcl
+# ==================================================
+#  AHB Slave Self-Check Testbench
+# ==================================================
+# [PASS]  word write/read: got=deadbeef exp=deadbeef
+# [PASS]  word write/read: got=12345678 exp=12345678
+# [PASS]  write/word read: got=000000ab exp=000000ab
+# [PASS] word0 write/read: got=a5a55a5a exp=a5a55a5a
+# [PASS]  word write/read: got=0f0ff0f0 exp=0f0ff0f0
+# [PASS] SRAM byte read: got=000000ff exp=000000ff
+# [PASS] -write word-read: got=000000ff exp=000000ff
+# [PASS] SRAM half read: got=00001234 exp=00001234
+# [PASS] -write word-read: got=56781234 exp=56781234
+# [PASS] erved addr write: ERROR response as expected
+# [PASS] served addr read: ERROR response as expected
+# [PASS] align word write: ERROR response as expected
+# [PASS] align half write: ERROR response as expected
+# [PASS] legal hsize read: ERROR response as expected
+# [PASS]  SRAM write/read: got=11112222 exp=11112222
+# [PASS] 3 REG write/read: got=88889999 exp=88889999
+# [PASS] with wait active: ERROR response as expected
+# ==================================================
+#  RESULT: pass=17 fail=0
+# ==================================================
+# *** ALL TESTS PASSED ***
+# ** Note: $finish    : tb/tb.sv(254)
+#    Time: 1795 ns  Iteration: 1  Instance: /tb
+# End time: 15:18:09 on Aug 29,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 1
