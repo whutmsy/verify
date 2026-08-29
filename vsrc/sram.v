@@ -1,38 +1,53 @@
-module sram (
-    input wire clk,           // 时钟信号
-    input wire rst,           // 复位信号，低电平有效
-    input wire [9:0] addr,    // 地址输入
-    input wire [7:0] data_in, // 写入数据
-    output reg [7:0] data_out,// 读出数据
-    input wire write_en       // 写使能信号，高电平有效
+//======================================================================
+// sram.v - SRAM 存储体模型（AHB 从设备的存储区）
+//   - 256 word x 32bit（1KB）存储阵列
+//   - 异步读：ce=1 且 we=0 时，组合输出读数据（数据阶段可直接返回）
+//   - 字节使能写：ce=1 且 we=1 时，clk 上升沿按 wstrb[3:0] 逐字节写入
+//   - 低电平异步复位清零
+//======================================================================
+module sram #(
+    parameter ADDR_WIDTH = 8,        // 字地址宽度（深度 = 2^ADDR_WIDTH word）
+    parameter DATA_WIDTH = 32        // 数据宽度（bit）
+)(
+    input  wire                   clk,     // 时钟
+    input  wire                   rst_n,   // 复位，低电平有效
+    input  wire                   ce,      // 片选，高电平有效
+    input  wire                   we,      // 写使能，高电平有效
+    input  wire [3:0]             wstrb,   // 字节写使能 [3:0] -> 对应 byte lane
+    input  wire [ADDR_WIDTH-1:0]  addr,    // 字地址（以 word 为单位）
+    input  wire [DATA_WIDTH-1:0]  wdata,   // 写数据
+    output wire [DATA_WIDTH-1:0]  rdata    // 读数据（异步组合输出）
 );
 
-// 定义SRAM存储器数组
-reg [7:0] memory [0:255];
+    localparam DEPTH = (1 << ADDR_WIDTH);   // 字数
+    localparam BYTES = DEPTH * (DATA_WIDTH/8); // 总字节数
 
-// 读操作
-always @(posedge clk) begin
-    if (!rst) begin
-        // 复位时，将data_out清零
-        data_out <= 8'b0;
-    end else if (!write_en) begin
-        // 如果写使能信号为低，执行读操作
-        data_out <= memory[addr];
-    end
-end
+    // 存储阵列：按字节组织，便于字节使能写
+    reg [7:0] mem [0:BYTES-1];
+    integer i;
 
-// 写操作
-always @(posedge clk) begin
-    if (!rst) begin
-        // 复位时，将所有存储器单元清零
-        integer i;
-        for (i = 0; i < 1024; i = i + 1) begin
-            memory[i] <= 8'b0;
+    // 异步读：片选且非写时，组合输出读数据
+    assign rdata = (ce && !we) ?
+                   {mem[{addr,2'b00}+3], mem[{addr,2'b00}+2],
+                    mem[{addr,2'b00}+1], mem[{addr,2'b00}+0]} :
+                   {DATA_WIDTH{1'b0}};
+
+    // 写操作：按字节写使能逐字节写入
+    always @(posedge clk) begin
+        if (ce && we) begin
+            for (i = 0; i < (DATA_WIDTH/8); i = i + 1) begin
+                if (wstrb[i])
+                    mem[{addr,2'b00}+i] <= wdata[i*8 +: 8];
+            end
         end
-    end else if (write_en) begin
-        // 如果写使能信号为高，执行写操作
-        memory[addr] <= data_in;
     end
-end
+
+    // 复位清零
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            for (i = 0; i < BYTES; i = i + 1)
+                mem[i] <= 8'h0;
+        end
+    end
 
 endmodule
